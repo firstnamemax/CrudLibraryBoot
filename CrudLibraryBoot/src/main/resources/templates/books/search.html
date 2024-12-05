@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Find book</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/books/search}" th:object="${foundBook}">
+    <div>
+        <label for="search">Enter name of interested book: </label>
+        <input type="text" th:field="*{title}" id="search"/>
+        <br>
+        <br>
+        <input type="submit" value="Find"/>
+    </div>
+</form>
+
+
+<div th:if="${FLAG == true}">
+    <p style="margin-top: 25px; margin-left: 50px; font-weight: bold" th:if="${#lists.size(books) != 0}">Found books:</p>
+
+    <p th:if="${#lists.size(books) == 0}" style="margin-top: 25px">There are no books with this title in the library</p>
+
+    <div th:if="${#lists.size(books) != 0}">
+        <div th:each="book : ${books}">
+            <a th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</a>
+            <br>
+            <a th:if="${book.getReader()} == null">Book is free</a>
+            <a th:if="${book.getReader()} != null">The book is now at: </a>
+            <a th:if="${book.getReader()} != null" th:text="${book.getReader().getName()}">Text</a>
+            <hr>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
